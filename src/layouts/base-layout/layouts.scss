@@ -1,0 +1,44 @@
+.skr-nav-shoptop{
+    width: 100%;
+    margin: auto;
+    height: 4.0625rem;
+    .skr-router{
+        display: flex;
+        justify-content: space-between;
+        .skr-router-left{
+            position: relative;
+            a{
+                position: absolute;
+                left: 0;
+                display: inline-block;
+                width: 10.75rem;
+                height: 4.0625rem;
+            }
+        }
+        .skr-router-center{
+            height: 4.0625rem;
+            display: flex;
+            align-items: center;
+        }
+        .skr-router-right{
+            height: 4.0625rem;
+            line-height: 4.0625rem;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .skr-nav-shoptop-two{
+        display: flex;
+        justify-content: space-evenly;
+        height: 4.0625rem;
+        background-color: #000;
+        .skr-navlink-two{
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 4.0625rem;
+        }
+    }
+}
+
