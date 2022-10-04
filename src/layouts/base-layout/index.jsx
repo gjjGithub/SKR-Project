@@ -1,42 +1,55 @@
 import logo from '../../image/logo/log.png'
 import './layouts.scss'
-import React from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
-import { AudioOutlined } from '@ant-design/icons';
-import { Input, Space, Breadcrumb } from 'antd';
-
+import React, { useState, useEffect } from 'react'
+import { getShopList } from '../../api'
+import { NavLink, Outlet,useNavigate } from 'react-router-dom'
+import {Breadcrumb } from 'antd';
+import BackTops from '../../components/BackTop'
+import Searchs from '../../components/Search'
 //  图标组件
 import {
   UserAddOutlined,
   ShoppingCartOutlined,
   UserSwitchOutlined
 } from '@ant-design/icons';
-// 搜索框组件
-const { Search } = Input;
-const suffix = (
-  <AudioOutlined
-    style={{
-      fontSize: 16,
-      color: '#1890ff',
-    }}
-  />
-);
-const onSearch = (value) => console.log(value);
 
 //  二级
-let tabs = [
-  {title:"鞋类",path:"/shoes"},
-  {title:"服饰",path:'/dress'},
-  {title:'配件',path:'/parts'},
-  {title:'儿童专区',path:'/children'},
-  {title:'POP',path:'/pop'},
-  {title:'EXCLUSIVE',path:'/exclusive'},
-  {title:'RVENT',path:'/rvent'},
-  {title:'BEST',path:'/best'},
+let tabsleft = [
+  { title: "鞋类", path: "/shoes" },
+  { title: "服饰", path: '/dress' },
+  { title: '配件', path: '/parts' },
+  { title: '儿童专区', path: '/children' },
 ]
-
-
+let tabsright = [
+  { title: 'POP', path: '/pop' },
+  { title: 'EXCLUSIVE', path: '/exclusive' },
+  { title: 'RVENT', path: '/rvent' },
+  { title: 'BEST', path: '/best' },
+]
 const BaseLayout = () => {
+  let [tits, setTits] = useState([])
+  let navigate = useNavigate()
+  // 二级悬浮框
+  const enterOpacity = async (title) => {
+    let data = await getShopList()
+    let tit = []
+    for (var i = 0; i < data.data.length; i++) {
+      if (data.data[i].parent_name === title) {
+        tit.push(data.data[i].name)
+      }
+    }
+    setTits(tit)
+    document.querySelector('.skr-navlink-twbu').style.display = 'block'
+
+  }
+  const leaveOpacity = ()=>{
+    document.querySelector('.skr-navlink-twbu').style.display = 'none'
+  }
+  // 点击二级分类跳转详情页
+  const shopListDetail = (params)=>{
+    navigate(`/detali/${params}`)
+  }
+
   return (
     <div className='skr-nav-shoptop'>
       <div className='skr-router'>
@@ -46,12 +59,7 @@ const BaseLayout = () => {
         </div>
 
         <div className='skr-router-center'>
-          <Space direction="vertical">
-            <Search placeholder="input search text"
-            style={{ width: 304 }}
-            
-            onSearch={onSearch} enterButton />
-          </Space>
+            <Searchs/>
         </div>
 
         <div className={'skr-router-right'}>
@@ -72,19 +80,64 @@ const BaseLayout = () => {
         </div>
 
       </div>
-
+      {/* 二级导航栏 */}
       <div className='skr-router-two'>
-        <div className='skr-nav-shoptop-two'>
-          {
-            tabs.map(item=>{
-              return (
-                  <NavLink className={'skr-navlink-two'} key={item.title} to={item.path}>{item.title}</NavLink>
-              ) 
-            })
-          }
+        <div className='skr-nav-shoptop-two' onMouseLeave={()=>leaveOpacity()}>
+          <div className='skr-nav-shoptop-two-left'>
+            {
+              tabsleft.map(item => {
+                return (
+                  <NavLink
+                    className={'skr-navlink-two'}
+                    onMouseOver={() => enterOpacity(item.title)}
+                    key={item.title}
+                    to={item.path}
+                  >
+                    {item.title}
+                  </NavLink>
+                )
+              })
+            }
+          </div>
+          <div className='skr-nav-shoptop-two-right' onMouseLeave={()=>leaveOpacity()}>
+            {
+              tabsright.map(item => {
+                return (
+                  <NavLink
+                    className={'skr-navlink-two'}
+                    onMouseLeave={()=>leaveOpacity()}
+                    key={item.title}
+                    to={item.path}
+                  >
+                    {item.title}
+                  </NavLink>
+                )
+              })
+            }
+          </div>
+          {/* 二级分类详情，点击跳转 */}
+          <div className='skr-navlink-twbu' onMouseLeave={()=>leaveOpacity()}>
+            <div className='skr-navlink-twbu-t'>
+              <div className='skr-navlink-twbu-ts'>
+                <div className='skr-navlink-twbu-ts-left'>
+                  {
+                    tits.map(item => {
+                      return (
+                        <div key={item} onClick={()=>shopListDetail(item)}>{item}</div>
+                      )
+                    })
+                  }
+                </div>
+                <div className='skr-navlink-twbu-ts-right'>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-        
+        <BackTops/>
       </div>
+      
       <Outlet></Outlet>
     </div>
   )

@@ -9,7 +9,8 @@ import Login from '../page/Login'
 import Resigin from '../page/Resigin'
 import NotFount from '../page/NotFount'
 import ShopCar from '../page/ShopCar'
-
+import Detail from '../page/ShopListdetail'
+import Shopdetail from '../page/Shopdetail'
 // 二级
 import BEST from '../page/Main/PEEB/BEST'
 import RVENT from '../page/Main/PEEB/EVENT'
@@ -28,11 +29,15 @@ function Router (){
             element:<BaseLayout/>,
             children:[
                 {
-                    path:'/home',
+                    path:'/',
+                    element:<Home/>
+                }, 
+                {
+                    path:`/home`,
                     element:<Home/>
                 },
                 {
-                    path:'resigin',
+                    path:'/resigin',
                     element:<Resigin/>
                 },
                 {
@@ -48,7 +53,7 @@ function Router (){
                     element:<Shoes/>
                 },
                 {
-                    path:'dress',
+                    path:'/dress',
                     element:<Dress/>
                 },
                 {
@@ -64,7 +69,7 @@ function Router (){
                     element:<POP/>
                 },
                 {
-                    path:'exclusive',
+                    path:'/exclusive',
                     element:<EXCLUSIVE/>
                 },
                 {
@@ -75,6 +80,14 @@ function Router (){
                     path:'/best',
                     element:<BEST/>
                 },
+                {
+                    path:`/detali/:params`,
+                    element: <Detail/>
+                },
+                {
+                    path:`/shopdetail/:params`,
+                    element: <Shopdetail/>
+                }
             ]
         },{
             path:'*',

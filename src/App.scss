@@ -3,6 +3,7 @@
     padding: 0;
     list-style: none;
     text-decoration: none;
+    box-sizing: border-box;
 }
 
 .main {
@@ -19,6 +20,6 @@
     }   
     .skr-main{
         margin: auto;
-        width: 93.75rem;
+        width: 87.5rem;
     }
 }
